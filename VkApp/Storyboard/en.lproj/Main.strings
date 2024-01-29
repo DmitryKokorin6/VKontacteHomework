@@ -1,0 +1,45 @@
+
+/* Class = "UILabel"; text = "Пароль"; ObjectID = "1Hp-tG-Fcv"; */
+"1Hp-tG-Fcv.text" = "Пароль";
+
+/* Class = "UINavigationItem"; title = "Друзья"; ObjectID = "5N2-eJ-O3O"; */
+"5N2-eJ-O3O.title" = "Друзья";
+
+/* Class = "UIButton"; configuration.title = "Button"; ObjectID = "7tz-HG-lXl"; */
+"7tz-HG-lXl.configuration.title" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "7tz-HG-lXl"; */
+"7tz-HG-lXl.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Логин"; ObjectID = "GW7-hP-SfS"; */
+"GW7-hP-SfS.text" = "Логин";
+
+/* Class = "UINavigationItem"; title = "Информация"; ObjectID = "Ghv-jw-68f"; */
+"Ghv-jw-68f.title" = "Информация";
+
+/* Class = "UITabBarItem"; title = "Item"; ObjectID = "HB9-Ke-jn9"; */
+"HB9-Ke-jn9.title" = "Item";
+
+/* Class = "UILabel"; text = "Группа"; ObjectID = "IT2-bm-rlZ"; */
+"IT2-bm-rlZ.text" = "Группа";
+
+/* Class = "UILabel"; text = "Кокорин Дима"; ObjectID = "K7y-Rj-GPM"; */
+"K7y-Rj-GPM.text" = "Кокорин Дима";
+
+/* Class = "UITabBarItem"; title = "Item"; ObjectID = "i6f-Ga-TVO"; */
+"i6f-Ga-TVO.title" = "Item";
+
+/* Class = "UIButton"; configuration.title = "Войти"; ObjectID = "iCw-dJ-jC6"; */
+"iCw-dJ-jC6.configuration.title" = "Войти";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "iCw-dJ-jC6"; */
+"iCw-dJ-jC6.normalTitle" = "Button";
+
+/* Class = "UINavigationItem"; title = "Группы"; ObjectID = "qeU-Km-Le6"; */
+"qeU-Km-Le6.title" = "Группы";
+
+/* Class = "UINavigationItem"; title = "Все группы"; ObjectID = "spB-5m-Ua4"; */
+"spB-5m-Ua4.title" = "Все группы";
+
+/* Class = "UILabel"; text = "ВКонтакте"; ObjectID = "x7M-8a-ld4"; */
+"x7M-8a-ld4.text" = "ВКонтакте";

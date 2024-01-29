@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "16C1CDE7-D1F7-4151-BCF2-D3C42DA21B21"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6DC3472E-2E46-4AA0-BC23-30267AC07E7D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VkApp/Reuse Cells/Collection Cell/InfoCollectionCell.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "17"
+            endingLineNumber = "17"
+            landmarkName = "awakeFromNib()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "6DC3472E-2E46-4AA0-BC23-30267AC07E7D - 5a60dc8729de09ef"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VkApp.InfoCollectionCell.awakeFromNib() -&gt; ()"
+                  moduleName = "VkApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dmitrijkokorin/Yandex.Disk.localized/Apple/VK/VkApp/VkApp/Reuse%20Cells/Collection%20Cell/InfoCollectionCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "18"
+                  endingLineNumber = "18"
+                  offsetFromSymbolStart = "73">
+               </Location>
+               <Location
+                  uuid = "6DC3472E-2E46-4AA0-BC23-30267AC07E7D - 5a60dc8729de09cc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VkApp.InfoCollectionCell.awakeFromNib() -&gt; ()"
+                  moduleName = "VkApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dmitrijkokorin/Yandex.Disk.localized/Apple/VK/VkApp/VkApp/Reuse%20Cells/Collection%20Cell/InfoCollectionCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17"
+                  offsetFromSymbolStart = "85">
+               </Location>
+               <Location
+                  uuid = "6DC3472E-2E46-4AA0-BC23-30267AC07E7D - 5a60dc8729de09cc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VkApp.InfoCollectionCell.awakeFromNib() -&gt; ()"
+                  moduleName = "VkApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dmitrijkokorin/Yandex.Disk.localized/Apple/VK/VkApp/VkApp/Reuse%20Cells/Collection%20Cell/InfoCollectionCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17"
+                  offsetFromSymbolStart = "90">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A6F2718A-99E7-4461-8130-76702BF6B40B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VkApp/New Group/FriendCollectionVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
+            landmarkName = "collectionView(_:cellForItemAt:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A6F2718A-99E7-4461-8130-76702BF6B40B - 20187dcff4df671"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VkApp.InfoCollectionVC.collectionView(_: __C.UICollectionView, cellForItemAt: Foundation.IndexPath) -&gt; __C.UICollectionViewCell"
+                  moduleName = "VkApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dmitrijkokorin/Yandex.Disk.localized/Apple/VK/VkApp/VkApp/New%20Group/FriendCollectionVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "664">
+               </Location>
+               <Location
+                  uuid = "A6F2718A-99E7-4461-8130-76702BF6B40B - 20187dcff4df671"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VkApp.InfoCollectionVC.collectionView(_: __C.UICollectionView, cellForItemAt: Foundation.IndexPath) -&gt; __C.UICollectionViewCell"
+                  moduleName = "VkApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dmitrijkokorin/Yandex.Disk.localized/Apple/VK/VkApp/VkApp/New%20Group/FriendCollectionVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "415">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
