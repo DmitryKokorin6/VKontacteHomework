@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Realm
+import RealmSwift
 
 final class FriendsCollectionView: UIViewController {
     
@@ -27,6 +29,8 @@ final class FriendsCollectionView: UIViewController {
         }
     }
     
+    var fotosResponseRealm: Results<FotosRequestRealm>?
+    var notificationToken: NotificationToken?
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -39,6 +43,8 @@ final class FriendsCollectionView: UIViewController {
             switch result {
             case .success(let fotos):
                 self.handleResponseFoto(fotoResponse: fotos)
+                self.loadFotosFromRealm()
+                self.setupNotificationToken()
             case .failure(let error):
                 print(error)
             }
@@ -46,24 +52,94 @@ final class FriendsCollectionView: UIViewController {
     }
     
     func handleResponseFoto(fotoResponse: FotosRequest) {
-        for item in fotoResponse.response.items {
-            if let url = item.sizes.last?.url,
-               let imageURL = URL(string: url)  {
-                guard let imageData = try? Data(contentsOf: imageURL) else { return }
-                guard let image = UIImage(data: imageData) else { return }
-                fotosResponse.append(image)
+        DispatchQueue.global().async {
+            do {
+                let realm = try Realm()
+                try realm.write {
+                    for item in fotoResponse.response.items {
+                        if let url = item.sizes.last?.url,
+                           let imageURL = URL(string: url),
+                           let imageData = try? Data(contentsOf: imageURL),
+                           let image = UIImage(data: imageData) {
+                            // Check if object with the same URL already exists
+                            if realm.object(ofType: SizesUrlRealm.self, forPrimaryKey: url) == nil {
+                                let sizesUrlRealm = SizesUrlRealm()
+                                sizesUrlRealm.url = url
+                                realm.add(sizesUrlRealm)
+                            }
+                        }
+                    }
+                }
+            } catch {
+                print("Error writing to Realm: \(error)")
             }
         }
-        DispatchQueue.main.async {
-            self.friendsCollectionView.reloadData()
+    }
+
+    
+    func loadFotosFromRealm() {
+        DispatchQueue.main.async { // Убедимся, что операции с Realm происходят в главном потоке
+            do {
+                let realm = try Realm()
+                self.fotosResponseRealm = realm.objects(FotosRequestRealm.self)
+                
+                if let fotos = self.fotosResponseRealm {
+                    // Convert Results<FotosRequestRealm> to an array of UIImage
+                    self.fotosResponse = fotos.compactMap { foto in
+                        guard let sizes = foto.response?.items.first?.sizes,
+                              let url = sizes.last?.url,
+                              let imageURL = URL(string: url),
+                              let imageData = try? Data(contentsOf: imageURL),
+                              let image = UIImage(data: imageData) else {
+                            return nil
+                        }
+                        return image
+                    }
+                } else {
+                    print("fotosResponseRealm is nil after querying Realm")
+                }
+                
+                self.friendsCollectionView.reloadData()
+            } catch {
+                print("Error loading fotos from Realm: \(error)")
+            }
         }
     }
+
+
+
+    func setupNotificationToken() {
+        DispatchQueue.main.async { // Убедимся, что установка наблюдателя происходит в главном потоке
+            do {
+                let realm = try Realm()
+                self.notificationToken = self.fotosResponseRealm?.observe { [weak self] changes in
+                    switch changes {
+                    case .initial:
+                        print("Initial data loaded from Realm")
+                        self?.loadFotosFromRealm()
+                    case .update(_, _, _, _):
+                        print("Realm data updated")
+                        self?.loadFotosFromRealm()
+                    case .error(let error):
+                        print("Error observing Realm changes: \(error)")
+                    }
+                }
+            } catch {
+                print("Error setting up notification token: \(error)")
+            }
+        }
+    }
+
 }
 
 extension FriendsCollectionView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
+        guard
+            indexPath.item < fotosResponse.count
+        else {
+            return UICollectionViewCell()
+        }
         
         let imageResponse = fotosResponse[indexPath.item]
         guard

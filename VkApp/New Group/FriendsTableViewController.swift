@@ -14,7 +14,6 @@ class FriendsTableViewController: UITableViewController {
         User(avatar: UIImage(named: "Паспорт Кокорин") ?? UIImage(), name: "Дмитрий"),
         User(avatar: UIImage(named: "Паспорт Кокорин") ?? UIImage(), name: "Анна"),
         User(avatar: UIImage(named: "Паспорт Кокорин") ?? UIImage(), name: "Кокорин Дима"),
-        User(avatar: UIImage(named: "Паспорт Кокорин") ?? UIImage(), name: "Пися")
     ]
     
     var filterFriends: [User] = []
@@ -65,15 +64,64 @@ class FriendsTableViewController: UITableViewController {
                 case .success(let friends):
                     // Обработка успешной загрузки списка друзей
                     self?.handleFriendsRequest(friends) // Функция, которая обновляет UI с учетом загруженных друзей
+                    self?.loadFriendsFromRealm()
                 case .failure(let error):
                     // Обработка ошибки при загрузке
                     print("Failed to load friends: \(error)")
                 }
             }
         loadFriendsFromRealm()
-        // ...
+    }
 
-        notificationToken = friendsFromRealm?.observe { [weak self] changes in
+    func updateUIAfterDeletion(at indexPath: IndexPath) {
+        guard let friendsFromRealm = friendsFromRealm, indexPath.row < friendsFromRealm.count else {
+            return
+        }
+
+        do {
+            let realm = try Realm()
+            try! realm.write {
+                realm.delete(friendsFromRealm[indexPath.row])
+            }
+                loadFriendsFromRealm()
+        } catch {
+            print("Ошибка удаления друга из Realm: \(error)")
+        }
+    }
+
+
+    func loadFriendsFromRealm() {
+        DispatchQueue.main.async { [weak self] in
+            do {
+                let realm = try Realm()
+                self?.friendsFromRealm = realm.objects(FriendsResponseInfoRealm.self)
+                
+                if let friendsFromRealm = self?.friendsFromRealm {
+                    print("Loaded \(friendsFromRealm.count) friends from Realm")
+                        self?.tableView.reloadData()
+                    if let strongSelf = self {
+                        strongSelf.setupNotificationToken(for: friendsFromRealm, in: realm)
+                    }
+                } else {
+                    print("Groups from Realm is nil")
+                }
+            }
+            catch {
+                print("Ошибка загрузки друзей из Realm: \(error)")
+            }
+        }
+    }
+
+
+    func handleDeletion(at index: Int) {
+        DispatchQueue.main.async {
+            print("Уведомление: Ячейка удалена в Realm по индексу \(index)")
+            self.tableView.reloadData()
+        }
+    }
+    
+    func setupNotificationToken(for results: Results<FriendsResponseInfoRealm>, in realm: Realm) {
+        notificationToken = results.observe { [weak self] changes in
                 // Выполняйте все операции Realm на главном потоке
                 do {
                     switch changes {
@@ -94,50 +142,6 @@ class FriendsTableViewController: UITableViewController {
                     
                 }
             }
-    
-
-        // ...
-
-    }
-
-    func updateUIAfterDeletion(at indexPath: IndexPath) {
-        guard let friendsFromRealm = friendsFromRealm, indexPath.row < friendsFromRealm.count else {
-            return
-        }
-
-        do {
-            let realm = try Realm()
-            try realm.write {
-                realm.delete(friendsFromRealm[indexPath.row])
-            }
-
-            
-                loadFriendsFromRealm()
-                tableView.deleteRows(at: [indexPath], with: .fade)
-            
-        } catch {
-            print("Ошибка удаления друга из Realm: \(error)")
-        }
-    }
-
-
-    func loadFriendsFromRealm() {
-            do {
-                let realm = try Realm()
-                friendsFromRealm = realm.objects(FriendsResponseInfoRealm.self)
-                
-                    tableView.reloadData()
-                }
-             catch {
-                print("Ошибка загрузки друзей из Realm: \(error)")
-            }
-        }
-    
-
-
-    func handleDeletion(at index: Int) {
-        print("Уведомление: Ячейка удалена в Realm по индексу \(index)")
-        tableView.reloadData()
     }
     
     deinit {
@@ -157,8 +161,10 @@ class FriendsTableViewController: UITableViewController {
     }
     
     func handleFriendsRequest(_ friendsRequest: FriendsRequest) {
-        self.friendsResponse = friendsRequest.response.items // Сохраняем список друзей из запроса
-        tableView.reloadData() // Обновляем таблицу, чтобы отобразить новых друзей
+        DispatchQueue.main.async {
+            self.friendsResponse = friendsRequest.response.items // Сохраняем список друзей из запроса
+            self.tableView.reloadData() // Обновляем таблицу, чтобы отобразить новых друзей
+        }
     }
 
     // MARK: - Table view data source
@@ -258,25 +264,30 @@ class FriendsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Получаем друга из Realm и удаляем
-            DispatchQueue.main.async {
-                guard let friendToDelete = self.friendsFromRealm?[indexPath.row] else { return }
-                
-                // Обновляем массив friendsFromRealm
-                do {
-                    let realm = try Realm()
-                    try realm.write {
-                        realm.delete(friendToDelete)
-                    }
-                } catch {
-                    print("Error deleting friend from Realm: \(error)")
+            guard let friendToDelete = self.friendsFromRealm?[indexPath.row] else { return }
+            
+            // Обновляем массив friendsFromRealm
+            do {
+                let realm = try Realm()
+                try realm.write {
+                    realm.delete(friendToDelete)
                 }
-                
-                // Обновляем массив friendsFromRealm после удаления
                 self.loadFriendsFromRealm()
                 
-                // Обновляем интерфейс
-                self.tableView.reloadData()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    tableView.beginUpdates()
+                    tableView.deleteRows(at: [indexPath], with: .automatic)
+                    tableView.endUpdates()
+                }
+            } catch {
+                print("Error deleting friend from Realm: \(error)")
             }
+            
+            // Обновляем массив friendsFromRealm после удаления
+            
+            // Обновляем интерфейс
+            tableView.reloadData()
+            updateUIAfterDeletion(at: indexPath)
         }
     }
 
